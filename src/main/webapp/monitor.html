@@ -8,19 +8,71 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <title>Monitor WebSocket</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles/MonitorStyle.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
     </head>
     <body>
-            <h1 id="temperatura">Temperatura: </h1>
-            <h1 id="ritmo">Ritmo Cardiaco: </h1>
-            <h1 id="presion">Presion arterial: </h1>
-            <script> 
-                var websocket = new WebSocket("ws://localhost:8080/ServidorMonitoreoSalud/wsmonitor");
-                websocket.onmessage = function processMessage (message) {
-                    var data = JSON.parse(message.data);
-                    document.getElementById("temperatura").textContent = "Temperatura: " +data.temperatura;
-                    document.getElementById("ritmo").textContent = "Ritmo cardiaco: "+data.ritmo;
-                    document.getElementById("presion").textContent = "Presion arterial: "+data.presion;
-                };
-            </script>
+        <nav class="navbar fixed-top shadow-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand text-light" href="#">Metricas del sensor</a>
+            </div>
+        </nav>
+
+        <div class="container-title"> 
+            <h1>TIEMPO REAL</h1>
+        </div>
+        
+        <div class="container-sensors">
+            <div class="sensor-top-item sensor-item-1 shadow-lg rounded">
+                <div id="temperaturaGauge"></div>
+            </div>
+            <div class="sensor-top-item sensor-item-2 shadow-lg rounded">
+                <div id="ritmoGauge"></div>
+            </div>
+            <div class="sensor-top-item sensor-item-3 shadow-lg rounded">
+                <div id="presionGauge"></div>
+            </div>
+        </div>
+        
+        <div class="container-variabilidad shadow-lg"> 
+            <div class="container-title"> 
+                <h1>VARIACION</h1>
+            </div>            
+            <div class="variety" id="temperaturaVariabilidad"></div>
+            <div class="variety" id="ritmoVariabilidad"></div>
+            <div class="variety" id="presionVariabilidad"></div>
+
+
+        </div>
+        <div class="container-promedios"> 
+            <div class="container-title"> 
+                <h1>PROMEDIOS</h1>
+            </div>
+            <div class="avg-elements">
+                <div class="element temperatura-avg" >
+                    <p id="temperatura_avg">0</p>
+                    <h2>°C</h2>
+                    <h2>Temperatura</h2>
+                </div> 
+                <div class="element ritmo-avg" >
+                    <p id="ritmo_avg">0</p>
+                    <h2>Bpm</h2>
+                    <h2>Ritmo</h2>
+                </div> 
+                <div class="element presion-avg" >
+                    <p id="presion_avg">0</p>
+                    <h2>mmHg</h2>
+                    <h2>Presión</h2>
+                </div> 
+            </div>
+        </div>
+
+
+        <div class="toast-container" id="toast-container"></div>
+
+        <script src="jscripts/MonitorScript.js"></script>
     </body>
 </html>

@@ -10,6 +10,7 @@ public class SensorInfo {
     private double temperatura;
     private double ritmoCardiaco;
     private double presionArterial;
+    private Instant time;
 
     public SensorInfo(String id, double temperatura, double ritmoCardiaco, double presionArterial) {
         this.id = id;
@@ -17,6 +18,16 @@ public class SensorInfo {
         this.ritmoCardiaco = ritmoCardiaco;
         this.presionArterial = presionArterial;
     }
+
+    public SensorInfo(String id, double temperatura, double ritmoCardiaco, double presionArterial, Instant time) {
+        this.id = id;
+        this.temperatura = temperatura;
+        this.ritmoCardiaco = ritmoCardiaco;
+        this.presionArterial = presionArterial;
+        this.time = time;
+    }
+    
+    
 
     public String getId() {
         return id;
@@ -26,7 +37,10 @@ public class SensorInfo {
         this.id = id;
     }
 
-    
+
+    public Instant getTime() {
+        return time;
+    }
     
     public double getTemperatura() {
         return temperatura;
@@ -44,7 +58,7 @@ public class SensorInfo {
         this.ritmoCardiaco = ritmoCardiaco;
     }
 
-    public double getPresionArteril() {
+    public double getPresionArterial() {
         return presionArterial;
     }
 

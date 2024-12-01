@@ -3,8 +3,6 @@ package com.alejandro.servidormonitoreosalud.model;
 
 import com.alejandro.servidormonitoreosalud.model.entities.SensorInfo;
 import com.alejandro.servidormonitoreosalud.controller.DBController;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,30 +22,18 @@ public class WSHealthMonitor {
 
     public static TickRateManager tickRateManager = new TickRateManager();
     
-    public static Set<Session> connections = Collections.synchronizedSet(new HashSet<Session>());
+    public static Set<Session> connections = Collections.synchronizedSet(new HashSet<>());
     
     @OnOpen
     public void onOpen(EndpointConfig endpointConfig, Session userSession){
-        try {
-            connections.add(userSession);
-            userSession.getUserProperties().put("username", endpointConfig.getUserProperties().get("username") );
-            
-            SensorInfo info = DBController.GetSensorInfoData(userSession.getUserProperties().get("username").toString());     
-            
-            JsonObject jsonObject = new JsonObject();
-            
-            jsonObject.addProperty("temperatura", info.getTemperatura());
-            jsonObject.addProperty("ritmo", info.getRitmoCardiaco());
-            jsonObject.addProperty("presion", info.getPresionArteril());
-            
-            userSession.getBasicRemote().sendText(jsonObject.toString());
-            
-            if (tickRateManager != null) {
-                tickRateManager.iniciarTickRate();
-            }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(WSHealthMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        connections.add(userSession);
+        
+        userSession.getUserProperties().put("username", endpointConfig.getUserProperties().get("username") );
+        SensorInfo info = DBController.GetSensorInfoData(userSession.getUserProperties().get("username").toString());
+        
+        tickRateManager.SendGaugesMessage(userSession, info);
+        if (tickRateManager != null) {
+            tickRateManager.iniciarTickRate();
         }
     }
     
@@ -79,5 +65,16 @@ public class WSHealthMonitor {
                 Logger.getLogger(WSHealthMonitor.class.getName()).log(Level.SEVERE, null, ex);
             } 
         }
+    }
+    
+    
+    public static Session GetSesionById(String id) {
+        for (Session s : WSHealthMonitor.connections) {
+            if (s.getUserProperties().get("username").toString().equals(id)) {
+                System.out.println("Sesion encontrada: " + id);
+                return s;
+            }
+        }
+        return null;
     }
 }

@@ -16,7 +16,7 @@ public class Main {
     
     private static void MostrarDatos(String id){
         
-        FluxRecord[] records =  DBController.GetData(id);
+        FluxRecord[] records =  DBController.GetAllData(id);
         
         System.out.println("Datos encontrados en Base de datos");
         

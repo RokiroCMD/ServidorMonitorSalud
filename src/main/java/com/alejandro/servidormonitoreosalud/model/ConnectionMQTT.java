@@ -1,4 +1,3 @@
-
 package com.alejandro.servidormonitoreosalud.model;
 
 import com.alejandro.servidormonitoreosalud.controller.QualityController;
@@ -15,47 +14,59 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConnectionMQTT {
-    
+
     private static final String BROKER_URL = "tcp://broker.hivemq.com:1883";
     private static final String TOPIC = "test/sensor";
     private static MqttClient client;
-    
+
     public static ConnectionMQTT instance;
-    
-    public static void InnitConnection(){
+
+    public static void InnitConnection() {
         if (instance == null) {
-            try {
-                instance = new ConnectionMQTT();
-                instance.connect();
-                System.out.println("Servidor MQTT iniciado");
-            } catch (MqttException ex) {
-                System.out.println("Error al iniciar servidor MQTT");
+            while (true) {
+                try {
+                    instance = new ConnectionMQTT();
+                    instance.connect();
+                    System.out.println("Servidor MQTT iniciado");
+                    break;
+                } catch (MqttException ex) {
+                    System.out.println("Error al iniciar MQTT... Intentando nuevamente.");
+                }
             }
         }
     }
-    
-    public void disconnet(){
+
+    public void disconnet() {
         if (client.isConnected()) {
             try {
                 client.disconnect();
             } catch (MqttException ex) {
-                Logger.getLogger(ConnectionMQTT.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
     }
-    
+
     public void connect() throws MqttException {
-        client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
-        MqttConnectOptions options = new MqttConnectOptions();
-        options.setCleanSession(false); // Cambiado a true para pruebas
-        options.setAutomaticReconnect(true);
-        
-        client.connect(options);
-        
-        if (client.isConnected()) {
+        try {
+            client = new MqttClient(BROKER_URL, MqttClient.generateClientId());
+            MqttConnectOptions options = new MqttConnectOptions();
+
+            options.setUserName("admin");
+            String password = "123";
+            options.setPassword(password.toCharArray());
+            options.setCleanSession(true);
+            options.setAutomaticReconnect(true);
+            options.setConnectionTimeout(10);
+            options.setKeepAliveInterval(60);
+
+            client.connect(options);
             System.out.println("Conectado al broker MQTT.");
             client.subscribe(TOPIC);
             System.out.println("Suscrito al topic: " + TOPIC);
+        } catch (MqttException e) {
+            System.err.println("Error al conectar al broker MQTT:");
+            e.printStackTrace();
+            throw e; // Lanza la excepción para ser manejada en el nivel superior
         }
 
         client.setCallback(new MqttCallback() {
@@ -73,13 +84,13 @@ public class ConnectionMQTT {
             public void messageArrived(String topic, MqttMessage message) {
                 try {
                     String mensaje = new String(message.getPayload(), "UTF-8");
-                    //System.out.println("Mensaje recibido: " + mensaje);
+                    System.out.println("Mensaje recibido: " + mensaje);
                     JsonObject json = JsonParser.parseString(mensaje).getAsJsonObject();
-                    String id =json.get("id").getAsString();
+                    String id = json.get("id").getAsString();
                     double temperatura = json.get("temperatura").getAsDouble();
                     double presion = json.get("presion").getAsDouble();
                     double ritmo = json.get("ritmo").getAsDouble();
-                    SensorInfo info = new SensorInfo(id,temperatura,ritmo,presion);
+                    SensorInfo info = new SensorInfo(id, temperatura, ritmo, presion);
                     QualityController.checkValues(info);
                 } catch (Exception e) {
                     System.err.println("Error al decodificar el mensaje: " + e.getMessage());
@@ -103,9 +114,9 @@ public class ConnectionMQTT {
             } catch (MqttException e) {
                 System.out.println("Error al reconectar, intentando nuevamente...");
                 try {
-                    Thread.currentThread().sleep(4000); 
+                    Thread.currentThread().sleep(4000);
                 } catch (InterruptedException ie) {
-                    
+
                 }
             }
         }

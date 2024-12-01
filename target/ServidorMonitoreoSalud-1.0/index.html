@@ -3,14 +3,68 @@
     <head>
         <title>Iniciar sesion</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            body{
+                background-color: #a6d0ff;
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, Tahoma, Geneva, Verdana, sans-serif, 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, 'Times New Roman', Times, serif, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, Cochin, Georgia, Times, 'Times New Roman', serif, Courier, monospace, 'Arial Narrow', Arial, sans-serif, 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, 'Arial Narrow', Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .login{
+                background-color: #fcfdff;
+                border-radius: 10px;
+                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+                width: 35em;
+                height: 20em;
+            }
+
+            .login h1{
+                padding-bottom: 2em;
+            }
+            .formulario{
+                display: flex;
+                height: 5em;
+                flex-direction: column;
+            }
+            .formulario input{
+                width: 25em;
+                height: 2em;
+                align-self: center;
+                justify-self: center;
+                text-align: center;
+                text-align-last: center;
+                font-size: 16px;
+            }
+
+            .formulario .boton{
+                margin-top: 1em;
+                width: 8em;
+                height: 8em;
+                border: none;
+                background-color: #ffffff;
+                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .formulario .boton:hover {
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
-        <h1>Ingresa tu usuario</h1>
-        <form action="http://localhost:8080/ServidorMonitoreoSalud/MonitorSensorServlet" method="post" >
-            <input type="text" name="nombre" value="" size="16" />
-            <input type="submit">
-        </form>
-        
-        
+        <div class="login">
+            <h1>INGRESE USUARIO</h1>
+            <form action="http://localhost:8080/ServidorMonitoreoSalud/MonitorSensorServlet" method="post" class="formulario">
+                <input type="text" name="nombre" value="" size="16" />
+                <input type="submit" class="boton">
+            </form>
+
+        </div>
     </body>
 </html>
