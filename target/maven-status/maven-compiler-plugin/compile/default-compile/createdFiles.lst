@@ -1,4 +1,5 @@
 com\alejandro\servidormonitoreosalud\Main.class
+com\alejandro\servidormonitoreosalud\view\ClusteringServlet.class
 com\alejandro\servidormonitoreosalud\model\TickRateManager$AlertColors.class
 com\alejandro\servidormonitoreosalud\model\ConnectionMQTT$1.class
 com\alejandro\servidormonitoreosalud\controller\QualityController.class
@@ -12,4 +13,5 @@ com\alejandro\servidormonitoreosalud\model\ConnectionMQTT.class
 com\alejandro\servidormonitoreosalud\model\TickRateManager.class
 com\alejandro\servidormonitoreosalud\view\PromediosServlet.class
 com\alejandro\servidormonitoreosalud\model\entities\SensorInfo.class
+com\alejandro\servidormonitoreosalud\view\InferenciaServlet.class
 com\alejandro\servidormonitoreosalud\view\VariacionesServlet.class

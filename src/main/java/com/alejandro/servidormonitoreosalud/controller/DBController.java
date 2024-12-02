@@ -34,12 +34,14 @@ public class DBController {
         // Mandar datos a escribir
         WriteData(point);
     }
-
     public static FluxRecord[] GetAllData(String document) {
+        return GetAllData(document, 24);
+    }
+    public static FluxRecord[] GetAllData(String document, int time) {
 
         QueryApi queryApi = ConnectionDB.instance.CLIENT.getQueryApi();
         String flux = String.format(
-                "from(bucket:\"%s\") |> range(start: -24h) |> filter(fn: (r) => r._measurement == \"" + document + "\")",
+                "from(bucket:\"%s\") |> range(start: -"+time+") |> filter(fn: (r) => r._measurement == \"" + document + "\")",
                 ConnectionDB.getINF_BUCKET());
 
         List<FluxTable> tables = queryApi.query(flux, ConnectionDB.getINF_ORG());
@@ -56,7 +58,6 @@ public class DBController {
 
         return resultRecords;
     }
-
     public static SensorInfo GetSensorInfoData(String id) {
 
         FluxRecord[] records = GetAllData(id);
@@ -75,7 +76,6 @@ public class DBController {
 
         return info;
     }
-
     public static List<SensorInfo> GetAllDailyFieldData(String id, String field) {
         FluxRecord[] records = GetAllData(id);
         List<SensorInfo> sensors = new ArrayList<>();
@@ -97,17 +97,44 @@ public class DBController {
         }
         return sensors;
     }
-
     public static List<SensorInfo> GetsAllDailyTempreatureData(String id) {
         return GetAllDailyFieldData(id, "temperatura");
     }
-
     public static List<SensorInfo> GetsAllDailyRithmData(String id) {
         return GetAllDailyFieldData(id, "ritmoCardiaco");
     }
-
     public static List<SensorInfo> GetsAllDailyPreassureData(String id) {
         return GetAllDailyFieldData(id, "presionArterial");
     }
+    public static List<SensorInfo> GetAllHourlyFieldData(String id, String field) {
+        FluxRecord[] records = GetAllData(id,1);
+        List<SensorInfo> sensors = new ArrayList<>();
+        for (FluxRecord record : records) {
+            if (record.getField().equals(field)) {
+                switch (field) {
+                    case "temperatura":
+                        sensors.add(new SensorInfo(id, (double) record.getValue(), -1, -1, record.getTime()));
+                        break;
+                    case "ritmoCardiaco":
+                        sensors.add(new SensorInfo(id, -1, (double) record.getValue(), -1, record.getTime()));
+                        break;
+                    case "presionArterial":
+                        sensors.add(new SensorInfo(id, -1, -1, (double) record.getValue(), record.getTime()));
+                        break;
+                }
 
+            }
+        }
+        return sensors;
+    }
+    public static List<SensorInfo> GetsAllHourlyTempreatureData(String id) {
+        return GetAllHourlyFieldData(id, "temperatura");
+    }
+    public static List<SensorInfo> GetsAllHourlyRithmData(String id) {
+        return GetAllHourlyFieldData(id, "ritmoCardiaco");
+    }
+    public static List<SensorInfo> GetsAllHourlyPreassureData(String id) {
+        return GetAllHourlyFieldData(id, "presionArterial");
+    }
+    
 }

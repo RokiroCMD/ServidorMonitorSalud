@@ -21,7 +21,7 @@ public class ConnectionMQTT {
 
     public static ConnectionMQTT instance;
 
-    public static void InnitConnection() {
+    public static void InnitConnection() {  
         if (instance == null) {
             while (true) {
                 try {

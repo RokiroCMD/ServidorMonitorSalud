@@ -14,7 +14,7 @@ import javax.websocket.Session;
 
 public class TickRateManager extends Thread {
 
-    private int TICK_RATE = 10;
+    private int TICK_RATE = 8;
     boolean canTick = false;
 
     public void iniciarTickRate() {
@@ -87,7 +87,6 @@ public class TickRateManager extends Thread {
             jsonObject.addProperty("color", alertColor);
             
             sesion.getBasicRemote().sendText(jsonObject.toString());
-            System.out.println("Mandando alerta a JScript");
         } catch (IOException ex) {
             Logger.getLogger(TickRateManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -366,11 +366,144 @@ const cerrarToast = (id) =>{
   document.getElementById(id).classList.add('toast-closing');  
 };
 
+const predictTemperature = document.getElementById("predict-temperatura");
+const predictRitmo = document.getElementById("predict-ritmo");
+const predictPresion = document.getElementById("predict-presion");
+
+function ajaxPredicciones(tipo, valor) {
+    var http = new XMLHttpRequest();
+    var url = 'InferenciaServlet'; // Asegúrate de que esta sea la ruta correcta de tu servlet
+    var params = 'tipo=' + tipo + '&sensor=' + valor; // Parametros tipo y valor
+
+    http.open("POST", url, true); // Abrimos la conexión
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // Definimos el tipo de contenido
+
+    // Cuando se recibe la respuesta del servidor
+    http.onreadystatechange = function() {
+        if (http.readyState == 4 && http.status == 200) {
+            var response = JSON.parse(http.responseText); // Si la respuesta es JSON, lo parseamos
+            
+            if (response.sensor === 'temp') {
+                predictTemperature.innerHTML = parseFloat(response.prediction).toFixed(2);
+            }
+            if (response.sensor === 'ritmo') {
+                predictRitmo.innerHTML = parseFloat(response.prediction).toFixed(2);
+            }
+            if (response.sensor === 'presion') {
+                predictPresion.innerHTML = parseFloat(response.prediction).toFixed(2);
+            }
+        }
+    };
+
+    http.send(params); // Enviamos la petición con los parámetros
+}
+
+var botonTemp = document.getElementById("btn-recargar-temp");
+var botonRitmo = document.getElementById("btn-recargar-ritmo");
+var botonPresion = document.getElementById("btn-recargar-presion");
+
+var botonCluster = document.getElementById("btn-cluster");
 
 // Llamada a funciones AJAX para asignacion de valores generales al cargar la pagina
 ajaxVariacionesTemperatura();
 ajaxVariacionesRitmo();
 ajaxVariacionesPresion();
 ajaxPromedios();
+
+function refreshTemp(){
+    ajaxPredicciones("recargar","temp");
+}
+function refreshRitmo(){
+    ajaxPredicciones("recargar","ritmo");
+}
+function refreshPresion(){
+    ajaxPredicciones("recargar","presion");
+}
+
+function plotClusters(points, clusters, centroids) {
+    const colors = ['red', 'blue', 'green', 'orange', 'purple']; // Diferentes colores para los clusters
+    const clusterTraces = [];
+
+    // Graficar puntos asignados a clusters
+    for (let i = 0; i < clusters.length; i++) {
+        const clusterIndex = clusters[i];
+
+        // Crear un nuevo rastro si no existe para el cluster
+        if (!clusterTraces[clusterIndex]) {
+            clusterTraces[clusterIndex] = {
+                x: [],
+                y: [],
+                z: [],
+                mode: 'markers',
+                type: 'scatter3d',
+                name: `Cluster ${clusterIndex}`,
+                marker: {
+                    color: colors[clusterIndex % colors.length],
+                    size: 5
+                }
+            };
+        }
+
+        // Agregar el punto al cluster correspondiente
+        clusterTraces[clusterIndex].x.push(points[i][0]); // Temperatura
+        clusterTraces[clusterIndex].y.push(points[i][1]); // Ritmo cardíaco
+        clusterTraces[clusterIndex].z.push(points[i][2]); // Presión arterial
+    }
+
+    // Graficar los centroides
+    const centroidTrace = {
+        x: centroids.map(c => c[0]),
+        y: centroids.map(c => c[1]),
+        z: centroids.map(c => c[2]),
+        mode: 'markers',
+        type: 'scatter3d',
+        name: 'Centroides',
+        marker: {
+            color: 'black',
+            size: 10,
+            symbol: 'diamond'
+        }
+    };
+
+    // Combinar los rastros y graficar
+    const layout = {
+        title: 'Clustering de Datos',
+        scene: {
+            xaxis: { title: 'Temperatura' },
+            yaxis: { title: 'Ritmo Cardíaco' },
+            zaxis: { title: 'Presión Arterial' }
+        }
+    };
+
+    Plotly.newPlot('cluster', [...clusterTraces, centroidTrace], layout);
+}
+
+function ajaxClusters() {
+    var http = new XMLHttpRequest();
+    var url = 'ClusteringServlet'; // Asegúrate de que esta sea la ruta correcta de tu servlet
+    http.open("POST", url, true); // Abrimos la conexión
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // Definimos el tipo de contenido
+
+    // Cuando se recibe la respuesta del servidor
+    http.onreadystatechange = function() {
+        if (http.readyState == 4 && http.status == 200) {
+            var response = JSON.parse(http.responseText); // Si la respuesta es JSON, lo parseamos
+            console.log(response);
+            const centroids = response.centroids;
+            const clusters = response.clusters;
+            const points = response.data;
+            
+             plotClusters(points, clusters, centroids);
+        }
+    };
+    http.send();
+}
+
+
+botonTemp.addEventListener("click", refreshTemp);
+botonRitmo.addEventListener("click", refreshRitmo);
+botonPresion.addEventListener("click", refreshPresion);
+botonCluster.addEventListener("click", ajaxClusters);
+
 
 

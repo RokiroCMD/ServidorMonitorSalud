@@ -24,7 +24,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <div class="container-title"> 
             <h1>TIEMPO REAL</h1>
         </div>
-        
+
         <div class="container-sensors">
             <div class="sensor-top-item sensor-item-1 shadow-lg rounded">
                 <div id="temperaturaGauge"></div>
@@ -36,7 +36,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <div id="presionGauge"></div>
             </div>
         </div>
-        
+
         <div class="container-variabilidad shadow-lg"> 
             <div class="container-title"> 
                 <h1>VARIACION</h1>
@@ -70,6 +70,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             </div>
         </div>
 
+
+        <div class="container-predicciones"> 
+            <div class="container-title"> 
+                <h1>PREDICCIONES</h1>
+            </div>
+            <div class="predict-content">
+                <div class="predict predict-temperatura">
+                    <h2 id="predict-temperatura">0.0</h2>
+                    <div class="predict-tooltip">
+                        <p>Dentro de 10 sondeos</p>
+                        <button id="btn-recargar-temp">Recargar</button>
+                    </div>
+                </div>
+                <div class="predict predict-ritmo">
+                    <h2 id="predict-ritmo">0.0</h2>
+                    <div class="predict-tooltip">
+                        <p>Dentro de 10 sondeos</p>
+                        <button id="btn-recargar-ritmo">Recargar</button>
+                    </div>
+                </div>
+                <div class="predict predict-presion">
+                    <h2 id="predict-presion">0.0</h2>
+                    <div class="predict-tooltip">
+                        <p>Dentro de 10 sondeos</p>
+                        <button id="btn-recargar-presion">Recargar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="container-clustering"> 
+            <div class="container-title"> 
+                <h1>CLUSTERING</h1>
+            </div>
+            <div class="clustering-content">
+                <button id="btn-cluster">CARGAR CLUSTER</button>
+                <div class="cluster" id="cluster"></div>
+            </div>
+        </div>
 
         <div class="toast-container" id="toast-container"></div>
 

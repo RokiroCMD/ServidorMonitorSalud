@@ -1,6 +1,7 @@
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\model\ConnectionDB.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\model\WSHealthMonitor.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\model\ConnectionMQTT.java
+C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\view\InferenciaServlet.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\view\VariacionesServlet.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\Main.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\controller\DBController.java
@@ -9,5 +10,6 @@ C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\m
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\utils\AppContextListener.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\view\PromediosServlet.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\model\WSMonitorConfigurator.java
+C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\view\ClusteringServlet.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\view\MonitorSensorServlet.java
 C:\Users\alexc\OneDrive\Documentos\NetBeansProjects\ServidorMonitoreoSalud\src\main\java\com\alejandro\servidormonitoreosalud\controller\QualityController.java
